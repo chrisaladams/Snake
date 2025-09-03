@@ -1,79 +1,14 @@
 #include <iostream>
 #include "raylib.h"
-using namespace std;
+#include "Snake.h"
+#include "food.h"
+#include "Renderer.h"
 
 //Game colors
 Color green = {173, 204, 96, 255};
-Color darkGreen = {43, 51, 24, 255};
 
-//Describe a snake
-class snake
-{
-public:
-    Vector2 direction = {1, 0};
-    vector<Vector2> body;
-    int segmentSize;
-
-    explicit snake(int cellSize)
-    {
-        segmentSize = cellSize;
-    }
-    //Draw snake with offset for screen variations.
-    void draw(const int cellSize, int offSetX, int offSetY) const
-    {
-        for (auto i: body)
-        {
-            DrawRectangle(i.x * cellSize + offSetX, i.y * cellSize + offSetY, segmentSize, segmentSize, darkGreen);
-        }
-    }
-
-    bool ateFood = false;
-};
-
-//Describe food
-class food
-{
-public:
-    Vector2 location;
-    int foodSize;
-
-    explicit food(int cellSize) : location()
-    {
-        foodSize = cellSize;
-    }
-
-    void draw(int cellSize, int offSetX, int offSetY) const
-    {
-        //Draw food with offsets and reducing the radius to fit the cell.
-        DrawCircle(location.x * cellSize + offSetX + cellSize / 2, location.y * cellSize + offSetY + cellSize / 2,
-                   foodSize / 2,GRAY);
-    }
-
-    //Check if it's safe to spawn food,
-    void spawnCheck(int gridWidth, int gridHeight, const snake& player)
-    {
-        bool isSafe = false;
-        while (!isSafe)
-        {
-            int randomX = rand() % gridWidth;
-            int randomY = rand() % gridHeight;
-            auto newLocation = Vector2(randomX, randomY);
-            isSafe = true;
-            for (const Vector2& segment: player.body)
-            {
-                if (newLocation.x == segment.x && newLocation.y == segment.y)
-                {
-                    isSafe = false;
-                    break; //Food Conflicts with snake!
-                }
-            }
-            location = newLocation;
-        }
-    }
-};
-
-
-void playerInput(snake& player)
+//Take player arrow key input and prevent snake from turning into its own head in complete reversal.
+void playerInput(Snake& player)
 {
     if (IsKeyPressed(KEY_RIGHT) && player.direction.x != -1)
     {
@@ -94,7 +29,9 @@ void playerInput(snake& player)
     }
 }
 
-void snakeMovement(snake& player)
+//movement is a head is place in front of the snake towards the direction its moving and a segment of the tail is removed
+//if it eats skip removing a tail segment.
+void snakeMovement(Snake& player)
 {
     Vector2 newHead = player.body[0];
     newHead.x += player.direction.x;
@@ -110,11 +47,11 @@ void snakeMovement(snake& player)
     }
 }
 
-void checkCollisions(snake& player, food& food,int GRID_WIDTH, int GRID_HEIGHT)
+void checkCollisions(Snake& player, Food& food,int GRID_WIDTH, int GRID_HEIGHT)
 {
 
     bool snakeHead = true;
-    if (player.body[0].x == food.location.x && player.body[0].y == food.location.y)
+    if (player.body[0].x == food.getLocation().x && player.body[0].y == food.getLocation().y)
     {
         player.ateFood = true;
         food.spawnCheck(GRID_WIDTH, GRID_HEIGHT, player);
@@ -137,37 +74,37 @@ void checkCollisions(snake& player, food& food,int GRID_WIDTH, int GRID_HEIGHT)
         }
     }
 }
-
 int main()
 {
     // Start with a reasonable default
     int screenWidth = 800;
     int screenHeight = 600;
-    cout << "Starting the game" << endl;
-    cout << screenHeight << " " << screenWidth << endl;
+    std::cout << "Starting the game" << std::endl;
+    std::cout << screenHeight << " " << screenWidth << std::endl;
     InitWindow(screenWidth, screenHeight, "Snake");
     SetTargetFPS(60);
 
     //Set up the grid and its cells
     constexpr int GRID_WIDTH = 30;
     constexpr int GRID_HEIGHT = 30;
-    const int cellSize = min(screenWidth / GRID_WIDTH, screenHeight / GRID_HEIGHT);
+    const int cellSize = std::min(screenWidth / GRID_WIDTH, screenHeight / GRID_HEIGHT);
     const int usedWidth = GRID_WIDTH * cellSize; // 30 * cellSize
     int usedHeight = GRID_HEIGHT * cellSize;
-    int offsetX = (screenWidth - usedWidth) / 2;
-    int offsetY = (screenHeight - usedHeight) / 2;
+    Vector2 offset;
+    offset.x = (screenWidth - usedWidth) / 2;
+    offset.y = (screenHeight - usedHeight) / 2;
 
     //Setup Starting Game Objects
-    snake player(cellSize);
-    player.body.push_back(Vector2(15, 15));
-    player.body.push_back(Vector2(14, 15));
-    player.body.push_back(Vector2(13, 15));
-    food gameFood(cellSize);
+    Snake player(cellSize);
+    Food gameFood(cellSize);
+    Renderer renderer;
+
     gameFood.spawnCheck(GRID_WIDTH, GRID_HEIGHT, player);
 
     //Game loop + speed
     int frameCount = 0;
     int frameSpeed = 10; //adjust for snake speed
+
     while (!WindowShouldClose())
     {
         //Update
@@ -176,6 +113,8 @@ int main()
 
         BeginDrawing();
         ClearBackground(green);
+
+        //Set speed for snake
         if (frameCount >= frameSpeed)
         {
             snakeMovement(player);
@@ -186,13 +125,20 @@ int main()
         checkCollisions(player,gameFood,GRID_WIDTH,GRID_HEIGHT);
 
         //Draw
-        player.draw(cellSize, offsetX, offsetY);
-        gameFood.draw(cellSize, offsetX, offsetY);
+        renderer.draw(cellSize,offset,gameFood.getLocation(),player.segmentSize,player.body);
 
         EndDrawing();
     }
     return 0;
 }
 //KNOWN BUGS:
-
-//2.No Wall or snake self collisions.
+//You never know what you don't know...
+//TODO:
+//1. Add resolution to snake collision logic
+//2. Add menus: Start, name (use same color as snake)
+//3. Track high scores
+//4. Clean up main function its doing too much
+//4. Polish graphics and fonts
+//OPTIONAL:
+//1. I don't know if I'll ever get to it but I'd love to make this game resolution responsive and learn that
+//perhaps even a settings menu?
