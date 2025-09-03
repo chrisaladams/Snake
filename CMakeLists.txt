@@ -12,7 +12,9 @@ add_executable(Snake main.cpp
         food.cpp
         food.h
         Renderer.cpp
-        Renderer.h)
+        Renderer.h
+        Game.cpp
+        Game.h)
 
 
 # Link raylib and required macOS frameworks
