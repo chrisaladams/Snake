@@ -1,12 +1,12 @@
 //
 // Created by Christian Adams on 9/2/25.
 //
-#include "Snake.h"
+#include "../../include/snake.h"
 #include <vector>
 #include "raylib.h"
 
 //Describe a snake
-Snake::Snake(const int cellSize)
+snake::snake(const int cellSize)
 {
     direction = {1, 0};
     segmentSize=cellSize;

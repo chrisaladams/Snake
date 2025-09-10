@@ -5,17 +5,17 @@
 #ifndef SNAKE_FOOD_H
 #define SNAKE_FOOD_H
 #include <raylib.h>
-#include "Snake.h"
+#include "snake.h"
 
 //Describe food
-class Food
+class food
 {
 public:
     [[nodiscard]] Vector2 getLocation() const {return location;}
-    explicit Food(int cellSize);
+    explicit food(int cellSize);
 
     //Check if it's safe to spawn food,
-    void spawnCheck(int gridWidth, int gridHeight, const Snake& player);
+    void spawnCheck(int gridWidth, int gridHeight, const snake& player);
 
 private:
     Vector2 location;

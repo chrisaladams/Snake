@@ -6,10 +6,10 @@
 #define SNAKE_SNAKE_H
 #include <vector>
 #include "raylib.h"
-class Snake
+class snake
 {
 public:
-    explicit Snake(int cellSize);
+    explicit snake(int cellSize);
     Vector2 direction{};
     std::vector<Vector2> body;
     int segmentSize;

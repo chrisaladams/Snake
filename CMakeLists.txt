@@ -6,16 +6,16 @@ set(CMAKE_CXX_STANDARD 20)
 include_directories(/opt/homebrew/include)
 link_directories(/opt/homebrew/lib)
 
-add_executable(Snake main.cpp
-        snake.cpp
-        snake.h
-        food.cpp
-        food.h
-        Renderer.cpp
-        Renderer.h
-        Game.cpp
-        Game.h)
-
+add_executable(Snake src/main.cpp
+        src/entities/Snake.cpp
+        src/entities/Food.cpp
+        src/Renderer.cpp
+        src/Game.cpp
+        src/systems/animation.cpp
+        src/systems/collisions.cpp
+        src/systems/playerInput.cpp
+)
+target_include_directories(Snake PRIVATE ${PROJECT_SOURCE_DIR}/include)
 
 # Link raylib and required macOS frameworks
 target_link_libraries(Snake

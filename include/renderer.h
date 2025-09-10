@@ -7,10 +7,10 @@
 #include "raylib.h"
 #include <vector>
 
-class Renderer
+class renderer
 {
 public:
-    Renderer();
+    renderer();
 
     void draw(int cellSize,const Vector2& offset,const Vector2& foodLocation,
                      int snakeSegmentSize, const std::vector<Vector2>& snakeBody);

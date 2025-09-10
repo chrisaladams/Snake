@@ -1,20 +1,20 @@
 //
 // Created by Christian Adams on 9/2/25.
 //
-#include "Food.h"
+#include "../../include/food.h"
 #include <vector>
 #include "raylib.h"
-#include "Snake.h"
+#include "../../include/snake.h"
 
 //Describe food
-Food::Food(int cellSize)
+food::food(int cellSize)
 {
     location = {18,18}; //Default start
     foodSize = cellSize;
 }
 
     //Check if it's safe to spawn food,
-    void Food::spawnCheck(int gridWidth, int gridHeight, const Snake& player)
+    void food::spawnCheck(int gridWidth, int gridHeight, const snake& player)
     {
         bool isSafe = false;
         while (!isSafe)
