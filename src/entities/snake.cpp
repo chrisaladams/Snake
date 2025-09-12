@@ -1,7 +1,7 @@
 //
 // Created by Christian Adams on 9/2/25.
 //
-#include "../../include/snake.h"
+#include "../../include/entities/snake.h"
 #include <vector>
 #include "raylib.h"
 

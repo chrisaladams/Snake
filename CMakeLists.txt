@@ -9,11 +9,13 @@ link_directories(/opt/homebrew/lib)
 add_executable(Snake src/main.cpp
         src/entities/Snake.cpp
         src/entities/Food.cpp
-        src/Renderer.cpp
-        src/Game.cpp
-        src/systems/animation.cpp
+        src/systems/renderer.cpp
+        src/game.cpp
+        src/systems/animations.cpp
         src/systems/collisions.cpp
         src/systems/playerInput.cpp
+        src/systems/grid.cpp
+        include/systems/grid.h
 )
 target_include_directories(Snake PRIVATE ${PROJECT_SOURCE_DIR}/include)
 

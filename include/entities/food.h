@@ -5,7 +5,8 @@
 #ifndef SNAKE_FOOD_H
 #define SNAKE_FOOD_H
 #include <raylib.h>
-#include "snake.h"
+
+class snake; // forward declaration
 
 //Describe food
 class food
@@ -18,7 +19,7 @@ public:
     void spawnCheck(int gridWidth, int gridHeight, const snake& player);
 
 private:
-    Vector2 location;
+    Vector2 location{};
     int foodSize;
 };
 

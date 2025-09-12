@@ -4,8 +4,8 @@
 
 #ifndef SNAKE_RENDERER_H
 #define SNAKE_RENDERER_H
-#include "raylib.h"
 #include <vector>
+#include "raylib.h"
 
 class renderer
 {

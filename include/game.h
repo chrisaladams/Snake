@@ -4,37 +4,36 @@
 
 #ifndef SNAKE_GAME_H
 #define SNAKE_GAME_H
-#include "snake.h"
-#include "food.h"
-#include "renderer.h"
+#include "raylib.h"
+#include "entities/snake.h"
+#include "entities/food.h"
+#include "systems/renderer.h"
+#include "systems/grid.h"
 
-class food;
 class game
 {
-    public:
-    game(int screenWidth,int screenHeight);
-    private:
-    snake player;
-    food gameFood;
-    renderer renderer;
-    //Game colors
+    //Game color
     Color green = {173, 204, 96, 255};
-    //Set up the grid and its cells
-    int cellSize = 30;
-    int GRID_WIDTH = 30;
-    int GRID_HEIGHT = 30;
-    Vector2 offset;
-    int usedHeight;
-    int usedWidth;
+
+
+    int cellSize;
+    Vector2 offset{};
     //Game loop + speed
     int frameCount = 0;
     int frameSpeed = 10; //adjust for snake speed
-
+    //Set up Game objects
+    snake player;
+    food gameFood;
+    renderer renderer;
+    grid gameGrid;
+    //Game systems
     void playerInput();
     void checkCollisions();
     void snakeAnimation();
+
 public:
     void run();
+    game(int screenWidth,int screenHeight);
 
 };
 

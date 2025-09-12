@@ -2,22 +2,26 @@
 // Created by Christian Adams on 9/2/25.
 //
 #include "../include/game.h"
-#include "../include/food.h"
+#include "../include/entities/food.h"
 #include "raylib.h"
 
 
 //Set Game Window
-game::game(int screenHeight,int screenWidth) : player(cellSize),
-                                            gameFood(cellSize),
-                                            cellSize(std::min(screenWidth / GRID_WIDTH,
-                                                              screenHeight / GRID_HEIGHT)),
-                                            usedHeight(GRID_HEIGHT * cellSize),usedWidth(GRID_WIDTH * cellSize)
+game::game(const int screenWidth, const int screenHeight)
+        : cellSize(0),
+          player(0), gameFood(0), gameGrid()
 {
+    // Initialize setup grid
+    gameGrid = grid(screenWidth, screenHeight, 30, 20);
+    cellSize = gameGrid.cellSize;
+    offset = gameGrid.offset;
+    //Setup game objects
+
+    player = snake(cellSize);
+    gameFood = food(cellSize);
 
     InitWindow(screenWidth, screenHeight, "Snake");
     SetTargetFPS(60);
-    offset.x = (screenWidth - usedWidth) / 2;
-    offset.y = (screenHeight - usedHeight) / 2;
 }
 
 void game::run()
@@ -27,6 +31,11 @@ void game::run()
         //Update
         frameCount++;
         playerInput();
+        if (frameCount >= frameSpeed)
+        {
+            snakeAnimation();
+            frameCount = 0;
+        }
 
         BeginDrawing();
         ClearBackground(green);

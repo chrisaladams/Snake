@@ -1,10 +1,8 @@
 //
 // Created by Christian Adams on 9/2/25.
 //
-#include "../../include/food.h"
-#include <vector>
-#include "raylib.h"
-#include "../../include/snake.h"
+#include "../../include/entities/food.h"
+#include "game.h"
 
 //Describe food
 food::food(int cellSize)

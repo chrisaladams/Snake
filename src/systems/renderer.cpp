@@ -1,7 +1,7 @@
 //
 // Created by Christian Adams on 9/2/25.
 //
-#include "../include/renderer.h"
+#include "../../include/systems/renderer.h"
 
 renderer::renderer()
 : green{173,204,96,255}, darkGreen{43,51,24,255}{}
