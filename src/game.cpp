@@ -12,11 +12,11 @@ game::game(const int screenWidth, const int screenHeight)
           player(0), gameFood(0), gameGrid()
 {
     // Initialize setup grid
-    gameGrid = grid(screenWidth, screenHeight, 30, 20);
+    gameGrid = grid(screenWidth, screenHeight, 25, 25);
     cellSize = gameGrid.cellSize;
     offset = gameGrid.offset;
-    //Setup game objects
 
+    //Setup game objects
     player = snake(cellSize);
     gameFood = food(cellSize);
 

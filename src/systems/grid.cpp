@@ -1,7 +1,7 @@
-#include "../../include/systems/grid.h"
+#include "systems/grid.h"
 #include <algorithm>
 
-// Grid constructor implementation encapsulating layout calculations
+// Grid constructor implementation with grid layout calculations.
 grid::grid(const int screenWidth, const int screenHeight, const int cols, const int rows)
 {
     width = cols;
