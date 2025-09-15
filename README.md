@@ -72,12 +72,42 @@ No automated tests are included yet.
 
 ## Known Issues / TODOs
 The original README contained these items; preserving and expanding them here:
-- TODO: State machine for menu (start, name entry)
-- TODO: Resolution for collision logic (you die)
 - TODO: Sounds
-- TODO: High score tracking
 - Optional: Make the game resolution‑responsive (settings menu?)
 - KNOWN BUGS: "You never know what you don't know..." (from `src/main.cpp` comments)
+
+## Recent changes (2025-09-14)
+Summary of fixes and features added during this session:
+
+1) Added a simple game state machine (Menu, Playing, GameOver)
+- Menu: enter player name, press Enter to start.
+- Playing: normal gameplay; ESC returns to Menu without quitting.
+- GameOver: Enter restarts, ESC returns to Menu.
+
+2) Score and highscores
+- Score increases by 10 per food.
+- Highscores persist to highscores.json (name + score only). Kept top 10.
+- Best score is shown in HUD and Menu.
+
+3) Input and UX
+- Disabled raylib default ESC-to-exit and handled ESC explicitly for menu navigation.
+
+4) Visuals
+- Playable grid now spans the entire window width and is anchored to the top-left.
+- A white border is drawn around the actual window bounds to make edges explicit.
+
+5) Edge-collision correctness (immediate death on touch)
+- Movement now performs a pre-move bounds check: if the next head position would go outside the grid, the game switches to GameOver without inserting the head. This prevents any frame from rendering past the edge.
+- After a pre-move GameOver, the frame skips further collision checks to avoid double-processing.
+
+6) Window size
+- Set the default window to 800x800 so a 25x25 grid fits exactly (cell size 32). This makes the grid edges coincide with the window edges on all sides.
+
+Notes for learning
+- See include/game.h for the GameState enum and related fields (score, name input, highscores).
+- See src/game.cpp for the state-specific update/draw functions (updateMenu, updatePlaying, updateGameOver; drawMenu, drawHUD, drawGameOver) and highscore load/save.
+- See src/systems/animations.cpp for the pre-move bounds check logic.
+- See src/systems/grid.cpp for the full-width grid and top-left anchoring (and deriving rows from window height). 
 
 ## Platform Notes
 - macOS/Homebrew paths are currently hardcoded in CMake (`/opt/homebrew`).

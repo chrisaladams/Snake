@@ -7,12 +7,23 @@
 #include "raylib.h"
 void game::snakeAnimation()
 {
+    // Compute next head first
     Vector2 newHead = player.body[0];
     newHead.x += player.direction.x;
     newHead.y += player.direction.y;
+
+    // Pre-move bounds check to avoid drawing outside window for a frame
+    if (newHead.x < 0 || newHead.x >= gameGrid.width || newHead.y < 0 || newHead.y >= gameGrid.height)
+    {
+        considerSubmitHighScore();
+        state = GameState::GameOver;
+        return;
+    }
+
+    // Apply movement
     player.body.insert(player.body.begin(), newHead);
 
-    if (player.ateFood == false)
+    if (!player.ateFood)
     {
         player.body.pop_back();
     } else
