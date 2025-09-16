@@ -11,13 +11,13 @@ void game::checkCollisions()
     {
         player.ateFood = true;
         score += 10;
-        if (score > bestHighScore) bestHighScore = score;
         gameFood.spawnCheck(gameGrid.width, gameGrid.height, player);
     }
     //Check collision with screen
     else if (player.body[0].x < 0 || player.body[0].x >= gameGrid.width || player.body[0].y < 0 || player.body[0].y >= gameGrid.height)
     {
-        considerSubmitHighScore();
+        highscores.submit(playerName, score);
+        highscores.save();
         state = GameState::GameOver;
         return;
     }
@@ -30,7 +30,8 @@ void game::checkCollisions()
 
             else
             {
-                considerSubmitHighScore();
+                highscores.submit(playerName, score);
+                highscores.save();
                 state = GameState::GameOver;
                 return;
             }

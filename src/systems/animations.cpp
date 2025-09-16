@@ -15,7 +15,8 @@ void game::snakeAnimation()
     // Pre-move bounds check to avoid drawing outside window for a frame
     if (newHead.x < 0 || newHead.x >= gameGrid.width || newHead.y < 0 || newHead.y >= gameGrid.height)
     {
-        considerSubmitHighScore();
+        highscores.submit(playerName, score);
+        highscores.save();
         state = GameState::GameOver;
         return;
     }

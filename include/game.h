@@ -7,11 +7,10 @@
 #include "raylib.h"
 #include "entities/snake.h"
 #include "entities/food.h"
-#include "systems/renderer.h"
+#include "systems/renderer.h"       // renderer handles all rendering
 #include "systems/grid.h"
+#include "services/high_scores.h"    // high score service
 #include <string>
-#include <vector>
-#include <utility>
 
 class game
 {
@@ -22,7 +21,7 @@ class game
     enum class GameState { Menu, Playing, GameOver };
     GameState state = GameState::Menu;
 
-    int cellSize;
+    int cellSize{};
     Vector2 offset{};
     //Game loop + speed
     int frameCount = 0;
@@ -30,42 +29,26 @@ class game
     //Set up Game objects
     snake player;
     food gameFood;
-    renderer renderer;
+    renderer gameRenderer;
     grid gameGrid;
+    HighScoreService highscores;
 
     // Game data
     int score = 0;
-    int bestHighScore = 0;
 
     // Name input
     std::string playerName;
     std::string nameInputBuffer;
 
-    // Highscores: vector of (name, score)
-    std::vector<std::pair<std::string,int>> highScores;
-
     //Game systems
-    void playerInput();
     void checkCollisions();
     void snakeAnimation();
-
-    // State update helpers
-    void updateMenu();
-    void updatePlaying();
-    void updateGameOver();
-
-    // Drawing helpers
-    void drawMenu();
-    void drawHUD();
-    void drawGameOver();
 
     // Control helpers
     void resetRun();
 
-    // Highscore persistence
-    void loadHighScores(const char* path = "highscores.json");
-    void saveHighScores(const char* path = "highscores.json");
-    void considerSubmitHighScore();
+    // Input handling (single place)
+    void playerInput();
 
 public:
     void run();
