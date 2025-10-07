@@ -4,13 +4,21 @@
 #include "../include/game.h"
 #include "raylib.h"
 
+namespace {
+    constexpr int GRID_COLUMNS = 25;
+    constexpr int GRID_ROWS = 25;
+    constexpr int TARGET_FPS = 60;
+    constexpr int INITIAL_FRAME_COUNT = 0;
+    constexpr int INITIAL_SCORE = 0;
+}
+
 //Set Game Window
 game::game(const int screenWidth, const int screenHeight)
         : cellSize(0),
           player(0), gameFood(0), gameGrid(), highscores("highscores.json")
 {
     // Initialize setup grid
-    gameGrid = grid(screenWidth, screenHeight, 25, 25);
+    gameGrid = grid(screenWidth, screenHeight, GRID_COLUMNS, GRID_ROWS);
     cellSize = gameGrid.cellSize;
     offset = gameGrid.offset;
 
@@ -19,7 +27,7 @@ game::game(const int screenWidth, const int screenHeight)
     gameFood = food(cellSize);
 
     InitWindow(screenWidth, screenHeight, "Snake");
-    SetTargetFPS(60);
+    SetTargetFPS(TARGET_FPS);
     // Disable default ESC-to-exit so we can use ESC for menu navigation
     SetExitKey(KEY_NULL);
 
@@ -50,7 +58,7 @@ void game::run()
                 if (frameCount >= frameSpeed)
                 {
                     snakeAnimation();
-                    frameCount = 0;
+                    frameCount = INITIAL_FRAME_COUNT;
                     // If snakeAnimation triggered GameOver (pre-move bounds), skip further processing
                     if (state == GameState::GameOver) break;
                 }
@@ -96,7 +104,7 @@ void game::run()
 void game::resetRun()
 {
     player = snake(cellSize);
-    score = 0;
+    score = INITIAL_SCORE;
     // respawn food safely
     gameFood.spawnCheck(gameGrid.width, gameGrid.height, player);
 }

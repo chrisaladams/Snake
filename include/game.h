@@ -15,7 +15,11 @@
 class game
 {
     //Game color
-    Color green = {173, 204, 96, 255};
+    static constexpr unsigned char GREEN_R = 173;
+    static constexpr unsigned char GREEN_G = 204;
+    static constexpr unsigned char GREEN_B = 96;
+    static constexpr unsigned char GREEN_A = 255;
+    Color green = {GREEN_R, GREEN_G, GREEN_B, GREEN_A};
 
     // STATES
     enum class GameState { Menu, Playing, GameOver };
@@ -24,8 +28,10 @@ class game
     int cellSize{};
     Vector2 offset{};
     //Game loop + speed
-    int frameCount = 0;
-    int frameSpeed = 10; //adjust for snake speed
+    static constexpr int DEFAULT_FRAME_COUNT = 0;
+    static constexpr int DEFAULT_FRAME_SPEED = 10; //adjust for snake speed
+    int frameCount = DEFAULT_FRAME_COUNT;
+    int frameSpeed = DEFAULT_FRAME_SPEED;
     //Set up Game objects
     snake player;
     food gameFood;

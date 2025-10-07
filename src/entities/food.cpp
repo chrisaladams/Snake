@@ -4,10 +4,15 @@
 #include "../../include/entities/food.h"
 #include "game.h"
 
+namespace {
+    constexpr int DEFAULT_FOOD_X = 18;
+    constexpr int DEFAULT_FOOD_Y = 18;
+}
+
 //Describe food
 food::food(int cellSize)
 {
-    location = {18,18}; //Default start
+    location = {DEFAULT_FOOD_X, DEFAULT_FOOD_Y}; //Default start
     foodSize = cellSize;
 }
 
